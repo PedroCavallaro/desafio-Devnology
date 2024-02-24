@@ -4,11 +4,19 @@ const productName = document.querySelector(
 const attributes = document.querySelectorAll(".attr_text > span");
 const ingredients = document.querySelector(".panel_text");
 const usedName = document.querySelector(".title-1");
-const quantity = document.querySelector("#field_quantity > .field_value");
+const usedQuantity = document.querySelector("#field_quantity > .field_value");
+const categories = Array.from(
+    document.querySelectorAll(
+        "#field_categories > .field_value > .tag.well_known"
+    ),
+    (categorie) => categorie.innerHTML
+);
 const brands = Array.from(
     document.querySelectorAll("[itemprop='brand']"),
     (brand) => brand.innerHTML
 );
+
+console.log(categories);
 const [nutriScore, nova1, ecoScore] = attributes;
 
 const nutriScoreMap = {
@@ -60,12 +68,13 @@ const productObj = {
     usedName: hasValue(usedName?.innerHTML),
     name: hasValue(productName?.innerHTML),
     brands: hasValue(brands),
+    categories: hasValue(categories),
     attributes: {
         nova1: mapAttribute(nova1?.innerHTML, novaScoreMap),
         nutriScore: mapAttribute(nutriScore?.innerHTML, nutriScoreMap),
         ecoScore: mapAttribute(ecoScore?.innerHTML, ecoScoreMap),
     },
-    quantity: hasValue(quantity?.innerHTML),
+    usedQuantity: hasValue(usedQuantity?.innerHTML),
     ingredients: formatIngredients(ingredients.innerHTML),
 };
 
