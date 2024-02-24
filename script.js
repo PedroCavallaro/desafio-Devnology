@@ -24,7 +24,7 @@ const nutriScoreMap = {
     "Qualidade nutricional boa": "B",
     "Qualidade nutricional média": "C",
     "Qualidade nutricional baixa": "D",
-    "Impacto ambiental alto": "E",
+    "Má qualidade nutricional": "E",
     "Faltam dados para calcular o Nutri-Score": "Dado não encontrado",
 };
 
@@ -39,7 +39,7 @@ const ecoScoreMap = {
     "Impacto ambiental muito baixo": "A",
     "Baixo impacto ambiental": "B",
     "Impacto ambiental moderado": "C",
-    "Má qualidade nutricional": "D",
+    "Impacto ambiental alto": "D",
     "Impacto ambiental desconhecido": "Dado não encontrado",
 };
 
@@ -52,14 +52,22 @@ const hasValue = (value) => {
 
 const formatIngredients = (ingredientsString) => {
     if (hasValue(ingredientsString)) {
-        return String(ingredientsString)
+        const ingredientsArray = String(ingredientsString)
             .trim()
             .replace(/[:;]/g, ",")
             .replace(/<span class="allergen">/g, "")
             .replace(/<\/span>/g, "")
+            .replace(/<strong>/g, "")
+            .replace(/<\/strong>/g, "")
+            .replace(
+                /<!-- text is in a different language than the interface -->/g,
+                ""
+            )
             .split("\n")
             .join()
             .split(",");
+
+        return ingredientsArray.filter((e) => e.trim() !== "");
     }
     return "Dado não encontrado";
 };
@@ -73,7 +81,7 @@ const mapAttribute = (text, map) => {
 
 const productObj = {
     usedName: hasValue(usedName?.innerHTML),
-    name: hasValue(productName?.innerHTML),
+    genericName: hasValue(productName?.innerHTML),
     brands: hasValue(brands),
     categories: hasValue(categories),
     attributes: {
