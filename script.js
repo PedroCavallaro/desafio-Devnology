@@ -52,7 +52,14 @@ const hasValue = (value) => {
 
 const formatIngredients = (ingredientsString) => {
     if (hasValue(ingredientsString)) {
-        return String(ingredientsString).trim().split("\n");
+        return String(ingredientsString)
+            .trim()
+            .replace(/[:;]/g, ",")
+            .replace(/<span class="allergen">/g, "")
+            .replace(/<\/span>/g, "")
+            .split("\n")
+            .join()
+            .split(",");
     }
     return "Dado não encontrado";
 };
